@@ -1,0 +1,47 @@
+<!-- 导航内容 -->
+
+<div nz-row nzType="flex" nzAlign="middle"
+  style="width: 400px; height:600px;padding-bottom: 16px; padding-right: 16px; margin:auto">
+  <nz-card nz-col nzSpan="24" nzHoverable style="width: 400px;">
+    <nz-card-tab>
+      <nz-tabset nzSize="large">
+        <nz-tab nzTitle="登陆"></nz-tab>
+      </nz-tabset>
+    </nz-card-tab>
+    <div nz-row nzType="flex" nzAlign="middle" nzJustify="space-around">
+      <nz-input-group nz-col nzSpan="24" [nzPrefix]="prefixTemplate">
+        <input type="text" nz-input placeholder="请输入密令" [(ngModel)]="code"
+          (keydown.enter)="login(loginSuccess,loginError)" />
+      </nz-input-group>
+      <ng-template #prefixTemplate><i nz-icon type="user"></i></ng-template>
+      <div nz-col nzSpan="8" style="margin-top:16px">
+        <button nz-button nzType="primary" (click)="login(loginSuccess,loginError)" [nzLoading]="loging">
+          <i nz-icon type="poweroff"></i>登陆
+        </button>
+      </div>
+    </div>
+  </nz-card>
+
+</div>
+
+
+
+<ng-template #loginSuccess>
+  <div class="ant-notification-notice-content">
+    <div class="ant-notification-notice-with-icon">
+      <span class="ant-notification-notice-icon"><i nz-icon type="smile" style="color: rgb(16, 142, 233);"></i></span>
+      <div class="ant-notification-notice-message">密令正确</div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #loginError>
+  <div class="ant-notification-notice-content">
+    <div class="ant-notification-notice-with-icon">
+      <span class="ant-notification-notice-icon"><i nz-icon type="meh" style="color: #faad14;"></i></span>
+      <div class="ant-notification-notice-message">密令错误</div>
+      <div class="ant-notification-notice-description">
+        想要保存自己的文章吗？请联系网页最下方的开发者吧~
+      </div>
+    </div>
+  </div>
+</ng-template>

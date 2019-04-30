@@ -1,0 +1,146 @@
+<!-- 导航内容 -->
+
+<div style="width: 100%;padding-bottom: 16px; padding-right: 16px" *ngIf="article">
+  <nz-card style="width: 100%;">
+    <nz-card-tab>
+      <nz-tabset nzSize="large" [(nzSelectedIndex)]="index">
+        <nz-tab [nzTitle]="article.title"></nz-tab>
+      </nz-tabset>
+    </nz-card-tab>
+    <div nz-row nzType="flex">
+      <!-- 左侧内容 -->
+      <div nz-col nzSpan="18">
+        <div nz-row nzType="flex" nzJustify="center">
+          <div nz-col nzSpan="24" id="contentBody">
+            <!-- 文章内容 -->
+            <div *ngFor="let content of article.content" [id]="content.title">
+              <h2 class="title">{{content.title}}</h2>
+              <ng-container *ngFor="let msg of content.content">
+                <p class="message" *ngIf="msg.type === 'string'">{{msg.message}}</p>
+                <p class="img" *ngIf="msg.type === 'img'">
+                  <img [src]="msg.message">
+                </p>
+              </ng-container>
+            </div>
+          </div>
+
+          <!-- 评论 -->
+          <nz-list nz-col nzSpan="24" class="comment" nzSize="large" [nzHeader]="commentsHeader">
+            <ng-template #commentsHeader>
+              <h2 id="comments">评论列表</h2>
+            </ng-template>
+            <nz-list-item *ngFor="let item of comments">
+              <nz-comment style="margin-left:20px;width:100%;">
+                <nz-comment-content>
+                  <div style="margin-bottom:15px;" *ngIf="item.rate">是否对您有帮助：
+                    <nz-rate [(ngModel)]="item.rate" [nzTooltips]="tooltips" nzAllowHalf nzDisabled></nz-rate>
+                  </div>
+                  <div style="margin-bottom:15px;" *ngIf="item.message"><strong>{{item.message}}</strong></div>
+                  <div nz-row nzType="flex">
+                    <div nz-col nzSpan="2">
+                      <i style="font-size: 15px; color: red;" nz-tooltip nzTitle="赞" nz-icon type="like"
+                        [theme]="likes > 0 ? 'twotone' : 'outline'"
+                        (click)="like(item,commentSuccess,commentError)"></i>
+                      <span class="count like">{{item.likes}}</span>
+                    </div>
+                    <div nz-col nzSpan="1">
+                      <i style="font-size: 15px;" nz-tooltip nzTitle="不喜欢" nz-icon type="dislike"
+                        [theme]="dislikes > 0 ? 'twotone' : 'outline'"
+                        (click)="dislike(item,commentSuccess,commentError)"></i>
+                      <span class="count dislike">{{item.dislikes}}</span>
+                    </div>
+                    <div nz-col nzOffset="14" nzSpan="7">评论时间：{{item.createDate}}</div>
+                  </div>
+                </nz-comment-content>
+              </nz-comment>
+            </nz-list-item>
+            <!-- 填写评论处 -->
+            <nz-list-item nz-row nzType="flex" id="commentSet">
+              <div nz-col nzSpan="24">
+                <h3>是否对您有帮助：</h3>
+              </div>
+              <nz-rate nz-col nzOffset="1" nzSpan="23" [(ngModel)]="newComments.rate" [nzTooltips]="tooltips"
+                nzAllowHalf></nz-rate>
+              <div nz-col nzSpan="24">
+                <h3>填写评论：</h3>
+              </div>
+              <div nz-col nzSpan="24">
+                <nz-comment style="margin-left:20px;width:100%;">
+                  <nz-comment-content>
+                    <nz-form-item>
+                      <textarea [(ngModel)]="newComments.message" nz-input rows="4"
+                        placeholder="如果您对网站或文章有任何的意见、建议或想法，都可以在此留言哦~"></textarea>
+                    </nz-form-item>
+                    <nz-form-item>
+                      <button nz-button nzType="primary" [nzLoading]="submitting" [disabled]="!newComments.message"
+                        (click)="saveComment(commentSuccess, commentError)">
+                        提交
+                      </button>
+                    </nz-form-item>
+                  </nz-comment-content>
+                </nz-comment>
+              </div>
+            </nz-list-item>
+          </nz-list>
+        </div>
+      </div>
+
+      <!-- 右侧导航条 -->
+      <div nz-col nzOffset="1" nzSpan="4">
+        <div nz-row nzType="flex">
+          <!-- 相关文章 -->
+          <nz-card nz-col nzSpan="24" style="width:100%" [nzBordered]="false" nzTitle="相关热点文章">
+            <nz-list [nzDataSource]="likeList" [nzRenderItem]="item" [nzItemLayout]="'horizontal'"
+              [nzLoading]="loading">
+              <ng-template #item let-item>
+                <nz-list-item>
+                  <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="'阅读次数：'+item.readCount">
+                    <ng-template #nzTitle>
+                      <a (click)="clickContent(item)"
+                        style="width: 175px;word-wrap: break-word;word-break: break-all;overflow: hidden;">
+                        {{item.title}}
+                      </a>
+                    </ng-template>
+                  </nz-list-item-meta>
+                </nz-list-item>
+              </ng-template>
+            </nz-list>
+          </nz-card>
+          <!-- 锚点 -->
+          <nz-anchor *ngIf="article" nz-col nzSpan="24" style="margin-top:20px;">
+            <nz-card style="width:90%" [nzBordered]="false" nzTitle="内容导航">
+              <nz-link *ngFor="let content of article.content" [nzHref]="'#'+content.title" [nzTitle]="content.title">
+              </nz-link>
+              <nz-link [nzHref]="'#comments'" [nzTitle]="'评论列表'"></nz-link>
+              <nz-link [nzHref]="'#commentSet'" [nzTitle]="'评论填写'"></nz-link>
+              <nz-button-group [nzSize]="'small'" style="margin-left:16px;margin-top:16px">
+                <button nz-button nzType="dashed" (click)="saveImgLocal()"><i nz-icon type="download"></i>下载</button>
+                <button nz-button nzType="dashed" (click)="editArticle()">编辑<i nz-icon type="highlight"></i></button>
+              </nz-button-group>
+            </nz-card>
+          </nz-anchor>
+        </div>
+      </div>
+    </div>
+  </nz-card>
+</div>
+
+<ng-template #commentSuccess>
+  <div class="ant-notification-notice-content">
+    <div class="ant-notification-notice-with-icon">
+      <span class="ant-notification-notice-icon"><i nz-icon type="smile" style="color: rgb(16, 142, 233);"></i></span>
+      <div class="ant-notification-notice-message">评论成功</div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #commentError>
+  <div class="ant-notification-notice-content">
+    <div class="ant-notification-notice-with-icon">
+      <span class="ant-notification-notice-icon"><i nz-icon type="meh" style="color: #faad14;"></i></span>
+      <div class="ant-notification-notice-message">评论失败啦</div>
+      <div class="ant-notification-notice-description">
+        您已经评论过了~不能多次操作。
+      </div>
+    </div>
+  </div>
+</ng-template>

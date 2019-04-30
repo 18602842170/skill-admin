@@ -1,0 +1,100 @@
+<nz-layout class="pageback3">
+  <!-- 顶部导航 -->
+  <div style="background: #fff;">
+    <div style="height:40px; width: 1400px; margin: 0 auto;" nz-row nzType="flex" nzJustify="space-between"
+      nzAlign="middle">
+      <div nz-col nzSpan="2">
+        <a class="aimg" nz-tooltip nzTitle="返回首页" nzPlacement="bottomLeft" routerLink="/pages/dashboard/">
+          <i nz-icon [nzType]="'home'" [nzTheme]="'twotone'" style="font-size: 24px;"></i>
+          <strong>Home</strong>
+        </a>
+      </div>
+      <div nz-col nzSpan="2">
+        <a class="aimg" nz-tooltip nzTitle="JAVA相关文章" nzPlacement="bottomLeft" (click)="clickSearch(serchError,'JAVA')">
+          <strong>JAVA</strong>
+        </a>
+      </div>
+      <div nz-col nzSpan="2">
+        <a class="aimg" nz-tooltip nzTitle="Angular相关文章" nzPlacement="bottomLeft"
+          (click)="clickSearch(serchError,'Angular')">
+          <strong>Angular</strong>
+        </a>
+      </div>
+      <div nz-col nzSpan="2">
+        <a class="aimg" nz-tooltip nzTitle="Python相关文章" nzPlacement="bottomLeft" routerLink="/pages/search/Python">
+          <strong>Python</strong>
+        </a>
+      </div>
+      <div nz-col nzSpan="2">
+        <a class="aimg" nz-tooltip nzTitle="JS JQuery相关文章" nzPlacement="bottomLeft"
+          routerLink="/pages/search/JS JQuery">
+          <strong>JS JQuery</strong>
+        </a>
+      </div>
+      <div nz-col nzSpan="2">
+        <a class="aimg" nz-tooltip nzTitle="微信开发相关文章" nzPlacement="bottomLeft" routerLink="/pages/search/微信开发">
+          <strong>微信开发</strong>
+        </a>
+      </div>
+      <div nz-col nzSpan="2">
+        <a class="aimg" nz-tooltip nzTitle="部署相关文章" nzPlacement="bottomLeft" routerLink="/pages/search/部署工具">
+          <strong>部署工具</strong>
+        </a>
+      </div>
+      <div nz-col nzSpan="2">
+        <a class="aimg" nz-tooltip nzTitle="服务器相关文章" nzPlacement="bottomLeft" routerLink="/pages/search/服务器">
+          <strong>服务器</strong>
+        </a>
+      </div>
+      <div nz-col nzSpan="6" style="height:30px" nz-tooltip nzTitle="请输入关键词搜索文章" nzPlacement="bottomLeft">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" style="width:100%; padding-right: 16px">
+          <input type="text" nz-input placeholder="搜索文章" [(ngModel)]='searchStr'
+            (keydown.enter)="clickSearch(serchError,'')">
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSearch (click)="clickSearch(serchError,'')"><i nz-icon
+              type="search"></i></button>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div style="padding-top: 10px;">
+    <div style="width: 1400px; margin: 0 auto;">
+      <!-- 内容 -->
+      <nz-content>
+        <div style="background: #f0f2f5; min-height: 840px;">
+          <router-outlet></router-outlet>
+        </div>
+      </nz-content>
+      <!-- 底部 -->
+      <nz-footer style="text-align: center;">
+        黎博睿 陈卓琪 ©2019 Implement By Angular
+        <a style="margin-left: 20px;margin-right: 20px;">Contact phone: 18602842170</a>
+        mail: 1260507432@qq.com
+      </nz-footer>
+    </div>
+  </div>
+  <!-- 锚点 -->
+  <nz-back-top [nzTemplate]="tpl" [nzVisibilityHeight]="100">
+    <ng-template #tpl>
+      <div nz-row nzType="flex" style="width: 200px;">
+        <div nz-col nzSpan="8" class="ant-back-top-inner"><i nz-icon type="up" theme="outline"></i></div>
+        <div nz-col nzSpan="8" nzOffset="2" class="ant-back-top-inner" routerLink="/pages/create-aricle">
+          <i nz-icon type="edit" theme="outline"></i>
+        </div>
+      </div>
+    </ng-template>
+  </nz-back-top>
+  <!-- 通知 -->
+  <ng-template #serchError>
+    <div class="ant-notification-notice-content">
+      <div class="ant-notification-notice-with-icon">
+        <span class="ant-notification-notice-icon"><i nz-icon type="meh" style="color: #faad14;"></i></span>
+        <div class="ant-notification-notice-message">您是否忘记在搜索框输入内容</div>
+        <div class="ant-notification-notice-description">
+          请输入关键词搜索文章
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</nz-layout>

@@ -1,0 +1,111 @@
+<!-- 导航内容 -->
+
+<div style="width: 100%;padding-bottom: 16px; padding-right: 16px" *ngIf="article">
+  <nz-card style="width: 100%;">
+    <nz-card-tab>
+      <nz-tabset nzSize="large" [(nzSelectedIndex)]="index" (click)="editTitle()" [hidden]='article.titleEdit'>
+        <nz-tab [nzTitle]="article.title">
+        </nz-tab>
+      </nz-tabset>
+      <div nz-row nzType="flex" nzAlign="bottom" style="margin-top:16px;margin-bottom:16px;"
+        [hidden]='!article.titleEdit'>
+        <div nz-col nzSpan="8"><input nz-input nzSize="default" [(ngModel)]='article.title' (blur)="editTitle()" />
+        </div>
+        <div nz-col nzOffset="15" nzSpan="1"><button nz-button nzType="primary" (click)="editTitle()">保存</button></div>
+      </div>
+
+    </nz-card-tab>
+    <div nz-row nzType="flex">
+      <!-- 左侧内容 -->
+      <div nz-col nzSpan="18">
+        <div nz-row nzType="flex" nzJustify="center">
+          <div nz-col nzSpan="24" id="contentBody">
+            <!-- 文章内容 -->
+            <div nz-row nzType="flex" nzAlign="middle" *ngFor="let content of article.contents" [id]="content.title">
+              <div nz-col nzSpan="19">
+                <h2 class="title">{{content.title}}</h2>
+              </div>
+              <div nz-col nzSpan="5">
+                <button nz-button nzType="default" style="margin-right: 8px;"
+                  (click)="openComponent(content)">编辑段落</button>
+                <button nz-button nzType="danger" style="margin-right: 8px;"
+                  (click)="deleteContent(content)">删除段落</button>
+              </div>
+              <div nz-col nzSpan="24">
+                <ng-container *ngFor="let msg of content.content">
+                  <div>
+                    <p [hidden]='msg.editMsg' class="message" *ngIf="msg.type === 'string'">{{msg.message}}</p>
+                    <p class="img" *ngIf="msg.type === 'img'">
+                      <img [src]="msg.message">
+                    </p>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 概要 -->
+        <nz-list id='outline' nz-col nzSpan="24" class="comment" [nzDataSource]="article.comments" nzSize="large"
+          [nzHeader]="commentsHeader">
+          <ng-template #commentsHeader>
+            <h3 id="comments">请在此处填写文章标签以及填写文章概要便于预览和搜索。必填！</h3>
+          </ng-template>
+          <nz-list-item id="commentSet" nz-row nzType="flex">
+            <div nz-col nzSpan="24" style="margin-bottom:16px">
+              <nz-tag *ngFor="let lable of lables" [nzMode]="'closeable'" [nzColor]="lable.color"
+                (nzAfterClose)="handleClose(lable)">
+                {{ lable.value }}
+              </nz-tag>
+              <nz-tag *ngIf="!inputVisible" class="editable-tag" nzNoAnimation (click)="showInput()">
+                <i nz-icon type="plus"></i> New Tag
+              </nz-tag>
+              <input #inputElement nz-input nzSize="small" *ngIf="inputVisible" type="text" [(ngModel)]="inputValue"
+                style="width: 78px;" (blur)="handleInputConfirm()" (keydown.enter)="handleInputConfirm()" />
+            </div>
+            <textarea nz-col nzSpan="24" [(ngModel)]="article.outline" nz-input rows="4"
+              placeholder="请在此处填写文章概要便于预览以及搜索" style="margin-bottom:16px"></textarea>
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" [nzLoading]="submitting"
+                [disabled]="!article.title || !article.outline || !lables.length" (click)="saveData(articleSuccess)">
+                提交
+              </button>
+            </div>
+            <div nz-col nzSpan="18" *ngIf="article.id">
+              <button nz-button nzType="danger" [nzLoading]="submitting" (click)="deleteData(articleSuccess)">
+                删除本文章！！
+              </button>
+            </div>
+          </nz-list-item>
+        </nz-list>
+      </div>
+
+      <!-- 右侧导航条 -->
+      <div nz-col nzOffset="1" nzSpan="4">
+        <div nz-row nzType="flex">
+          <!-- 锚点 -->
+          <nz-anchor *ngIf="article" nz-col nzSpan="24" style="margin-top:20px;">
+            <nz-card style="width:90%" [nzBordered]="false" nzTitle="内容导航">
+              <button style="margin-bottom:20px;" nz-button nzType="primary" [nzSize]="'default'" nzShape="round"
+                (click)="addContent()">
+                <i nz-icon type="plus-circle"></i>添加段落
+              </button>
+              <nz-link *ngFor="let content of article.contents" [nzHref]="'#'+content.title" [nzTitle]="content.title">
+              </nz-link>
+              <nz-link [nzHref]="'#outline'" [nzTitle]="'提交'"></nz-link>
+            </nz-card>
+          </nz-anchor>
+        </div>
+      </div>
+    </div>
+  </nz-card>
+</div>
+
+<ng-template #articleSuccess>
+  <div class="ant-notification-notice-content">
+    <div class="ant-notification-notice-with-icon">
+      <span class="ant-notification-notice-icon"><i nz-icon type="smile" style="color: rgb(16, 142, 233);"></i></span>
+      <div class="ant-notification-notice-message">保存成功</div>
+    </div>
+  </div>
+</ng-template>

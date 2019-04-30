@@ -1,0 +1,44 @@
+<div nz-row nzGutter="8">
+  <div nz-col nzSpan="24">
+    <nz-form-item>
+      <nz-form-label>段落标题</nz-form-label>
+      <nz-form-control>
+        <input nz-input placeholder="please enter user name" [(ngModel)]='content.title' />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col nzSpan="24">
+    <nz-form-item>
+      <nz-form-label>段落内容</nz-form-label>
+      <nz-dropdown style="margin-left:480px">
+        <button nz-button nz-dropdown nzType="primary" [nzSize]="'small'">添加内容<i nz-icon type="down"></i></button>
+        <ul nz-menu>
+          <li nz-menu-item>
+            <a (click)="addString(content)">添加文字</a>
+          </li>
+          <li nz-menu-item>
+            <label for="upfls">文件上传</label>
+            <input id="upfls" type="file" (change)="addimg($event)" accept="image/*" hidden>
+          </li>
+        </ul>
+      </nz-dropdown>
+      <nz-form-control *ngFor="let msg of content.content" nz-popover nzPlacement="topLeft" [nzTitle]="titleTemplate"
+        [nzContent]="contentTemplate" style="margin-bottom:8px;">
+        <textarea class="message" [(ngModel)]="msg.message" nz-input rows="2" placeholder="输入文字内容"
+          [disabled]='msg.type === "img"'></textarea>
+        <ng-template #titleTemplate>
+          <i nz-icon type="highlight"></i>
+          <ng-container *ngIf="msg.type === 'string'">文本</ng-container>
+          <ng-container *ngIf="msg.type === 'img'">图片</ng-container>
+        </ng-template>
+        <ng-template #contentTemplate>
+          <button nz-button nzType="danger" style="margin-right: 8px;"
+            (click)="deleteStringOrImg(content,msg)">删除</button>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</div>
+<div class="footer">
+  <button type="button" (click)="close()" class="ant-btn" style="margin-right: 8px;"><span>完成</span></button>
+</div>

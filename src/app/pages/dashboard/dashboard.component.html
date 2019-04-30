@@ -1,0 +1,108 @@
+<!-- 导航内容 -->
+<div style="width: 100%;padding-bottom: 16px; padding-right: 16px">
+  <nz-card nzHoverable style="width: 100%;">
+    <nz-card-tab>
+      <nz-tabset nzSize="large" [(nzSelectedIndex)]="index">
+        <nz-tab nzTitle="热门文章"></nz-tab>
+        <nz-tab nzTitle="最近更新"></nz-tab>
+      </nz-tabset>
+    </nz-card-tab>
+    <ng-container *ngIf="index === 0">
+      <nz-card *ngFor="let data of list" nz-card-grid style="width:100%;padding-bottom:16px;margin:5px;"
+        [nzBordered]="false" [nzTitle]="data.title" [nzExtra]="extraTemplate" (click)="clickOutline(data)">
+        <div nz-row nzType="flex" nzAlign="middle">
+          <div nz-col nzSpan="24" class="content">{{data.outline}}</div>
+          <div nz-col nzSpan="24" class="contentDetail">
+            <nz-tag *ngFor="let lable of data.tags" [nzColor]="lable.color">
+              {{ lable.value }}
+            </nz-tag>
+          </div>
+          <div nz-col nzSpan="4" class="contentDetail">阅读次数：{{data.readCount}}</div>
+          <div nz-col nzSpan="20" class="contentDetail">更新时间：{{data.modify_time | date:'yyyy-MM-dd HH:mm:ss'}}</div>
+        </div>
+      </nz-card>
+    </ng-container>
+    <ng-container *ngIf="index === 1">
+      <nz-card *ngFor="let data of list2" nz-card-grid style="width:100%;padding-bottom:16px;margin:5px;"
+        [nzBordered]="false" [nzTitle]="data.title" [nzExtra]="extraTemplate" (click)="clickOutline(data)">
+        <div nz-row nzType="flex" nzAlign="middle">
+          <div nz-col nzSpan="24" class="content">{{data.outline}}</div>
+          <div nz-col nzSpan="24" class="contentDetail">
+            <nz-tag *ngFor="let lable of data.tags" [nzColor]="lable.color">
+              {{ lable.value }}
+            </nz-tag>
+          </div>
+          <div nz-col nzSpan="4" class="contentDetail">阅读次数：{{data.readCount}}</div>
+          <div nz-col nzSpan="20" class="contentDetail">更新时间：{{data.modify_time | date:'yyyy-MM-dd HH:mm:ss'}}</div>
+        </div>
+      </nz-card>
+    </ng-container>
+  </nz-card>
+</div>
+<!-- 卡片标签 -->
+<div style="width: 100%; height: 100%;" nz-row nzType="flex" nzAlign="middle" nzGutter="24">
+  <div nz-col nzSpan="3" style="padding-bottom: 16px;">
+    <nz-card nzHoverable nz-card-grid style="width:100%" [nzCover]="java" routerLink="/pages/search/JAVA">
+      <nz-card-meta nzTitle="Java" nzDescription="java开发以及javaWeb相关文章"></nz-card-meta>
+    </nz-card>
+    <ng-template #java>
+      <img alt="example" class='cardImg' src="https://libr-skill.oss-cn-shenzhen.aliyuncs.com/static/java.jpg" />
+    </ng-template>
+  </div>
+  <div nz-col nzSpan="3" style="padding-bottom: 16px;">
+    <nz-card nzHoverable nz-card-grid style="width:100%" [nzCover]="angualr" routerLink="/pages/search/angualr">
+      <nz-card-meta nzTitle="Angular" nzDescription="前端框架angular相关文章"></nz-card-meta>
+    </nz-card>
+    <ng-template #angualr>
+      <img alt="example" class='cardImg' src="https://libr-skill.oss-cn-shenzhen.aliyuncs.com/static/angualr.jpg" />
+    </ng-template>
+  </div>
+  <div nz-col nzSpan="3" style="padding-bottom: 16px;">
+    <nz-card nzHoverable nz-card-grid style="width:100%" [nzCover]="python" routerLink="/pages/search/python">
+      <nz-card-meta nzTitle="Python" nzDescription="python以及django相关 文章"></nz-card-meta>
+    </nz-card>
+    <ng-template #python>
+      <img alt="example" class='cardImg' src="https://libr-skill.oss-cn-shenzhen.aliyuncs.com/static/python.jpg" />
+    </ng-template>
+  </div>
+  <div nz-col nzSpan="3" style="padding-bottom: 16px;">
+    <nz-card nzHoverable nz-card-grid style="width:100%" [nzCover]="js" routerLink="/pages/search/js">
+      <nz-card-meta nzTitle="JS JQuery" nzDescription="javascript以及JQuery相关文章"></nz-card-meta>
+    </nz-card>
+    <ng-template #js>
+      <img alt="example" class='cardImg' src="https://libr-skill.oss-cn-shenzhen.aliyuncs.com/static/js.jpg" />
+    </ng-template>
+  </div>
+  <div nz-col nzSpan="3" style="padding-bottom: 16px;">
+    <nz-card nzHoverable nz-card-grid style="width:100%" [nzCover]="wechat" routerLink="/pages/search/js">
+      <nz-card-meta nzTitle="微信开发" nzDescription="微信公众号以及小程序相关文章"></nz-card-meta>
+    </nz-card>
+    <ng-template #wechat>
+      <img alt="example" class='cardImg' src="https://libr-skill.oss-cn-shenzhen.aliyuncs.com/static/wechat.jpg" />
+    </ng-template>
+  </div>
+  <div nz-col nzSpan="3" style="padding-bottom: 16px;">
+    <nz-card nzHoverable nz-card-grid style="width:100%" [nzCover]="docker" routerLink="/pages/search/docker">
+      <nz-card-meta nzTitle="Docker" nzDescription="Docker容器工具应用相关文章"></nz-card-meta>
+    </nz-card>
+    <ng-template #docker>
+      <img alt="example" class='cardImg' src="https://libr-skill.oss-cn-shenzhen.aliyuncs.com/static/docker.jpg" />
+    </ng-template>
+  </div>
+  <div nz-col nzSpan="3" style="padding-bottom: 16px;">
+    <nz-card nzHoverable nz-card-grid style="width:100%" [nzCover]="nginx" routerLink="/pages/search/nginx">
+      <nz-card-meta nzTitle="Nginx" nzDescription="nginx服务器以及代理服务相关文章"></nz-card-meta>
+    </nz-card>
+    <ng-template #nginx>
+      <img alt="example" class='cardImg' src="https://libr-skill.oss-cn-shenzhen.aliyuncs.com/static/nginx.jpg" />
+    </ng-template>
+  </div>
+  <div nz-col nzSpan="3" style="padding-bottom: 16px;">
+    <nz-card nzHoverable nz-card-grid style="width:100%" [nzCover]="ubantu" routerLink="/pages/search/ubantu">
+      <nz-card-meta nzTitle="Ubantu" nzDescription="ubantu操作以及web部署相关文章"></nz-card-meta>
+    </nz-card>
+    <ng-template #ubantu>
+      <img alt="example" class='cardImg' src="https://libr-skill.oss-cn-shenzhen.aliyuncs.com/static/ubantu.jpg" />
+    </ng-template>
+  </div>
+</div>

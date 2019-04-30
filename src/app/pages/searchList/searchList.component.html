@@ -1,0 +1,36 @@
+<!-- 导航内容 -->
+<div style="width: 100%;padding-bottom: 16px; padding-right: 16px">
+  <nz-card nzHoverable style="width: 100%;">
+    <nz-card-tab>
+      <nz-tabset nzSize="large" [(nzSelectedIndex)]="index">
+        <nz-tab nzTitle="搜索结果"></nz-tab>
+      </nz-tabset>
+    </nz-card-tab>
+    <div nz-row nzType="flex">
+      <nz-card nz-col nzSpan="24" *ngFor="let data of list" nz-card-grid
+        style="width:100%;padding-bottom:16px;margin:5px;" [nzBordered]="false" [nzTitle]="data.title"
+        [nzExtra]="extraTemplate" (click)="clickContent(data)">
+        <div nz-row nzType="flex" nzAlign="middle">
+          <div nz-col nzSpan="24" class="content">{{data.outline}}</div>
+          <div nz-col nzSpan="24" class="contentDetail">
+            <nz-tag *ngFor="let lable of data.tags" [nzColor]="lable.color">
+              {{ lable.value }}
+            </nz-tag>
+          </div>
+          <div nz-col nzSpan="4" class="contentDetail">阅读次数：{{data.readCount}}</div>
+          <div nz-col nzSpan="20" class="contentDetail">更新时间：{{data.modify_time | date:'yyyy-MM-dd HH:mm:ss'}}</div>
+        </div>
+      </nz-card>
+    </div>
+    <div nz-col nzSpan="24" style="width:100%;padding-bottom:16px;margin:5px;" *ngIf="pageCon.isSpinning">
+      <nz-spin [nzSpinning]="pageCon.isSpinning" [nzDelay]="500" nzTip='加载更多文章中...'>
+        <nz-alert [nzType]="'info'" [nzMessage]="'请稍后'" [nzDescription]="'加载更多数据中。'">
+        </nz-alert>
+      </nz-spin>
+    </div>
+    <div nz-col nzSpan="24" style="width:100%;padding-bottom:16px;margin:5px;" *ngIf="!pageCon.canSearch">
+      <nz-alert [nzType]="'info'" [nzMessage]="'不要往下拉了~'" [nzDescription]="'没有更多搜索结果啦~'">
+      </nz-alert>
+    </div>
+  </nz-card>
+</div>
